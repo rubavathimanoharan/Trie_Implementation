@@ -12,10 +12,11 @@ struct Trie
     struct Trie *character[CHAR_SIZE];
 };
 
+typedef struct Trie trie;
 // Function that returns a new Trie node
-struct Trie *getNewTrieNode()
+trie *getNewTrieNode()
 {
-    struct Trie *node = (struct Trie *)malloc(sizeof(struct Trie));
+    trie *node = (trie *)malloc(sizeof(trie));
     node->isLeaf = 0;
 
     for (int i = 0; i < CHAR_SIZE; i++)
@@ -27,10 +28,10 @@ struct Trie *getNewTrieNode()
 }
 
 // Iterative function to insert a string into a Trie
-void insert(struct Trie *head, char *str)
+void insert(trie *head, char *str)
 {
     // start from the root node
-    struct Trie *curr = head;
+    trie *curr = head;
 
     while (*str)
     {
@@ -54,7 +55,7 @@ void insert(struct Trie *head, char *str)
 
 // Iterative function to search a string in a Trie. It returns 1
 // if the string is found in the Trie; otherwise, it returns 0.
-int search(struct Trie *head, char *str)
+int search(trie *head, char *str)
 {
     // return 0 if Trie is empty
     if (head == NULL)
@@ -62,7 +63,7 @@ int search(struct Trie *head, char *str)
         return 0;
     }
 
-    struct Trie *curr = head;
+    trie *curr = head;
     while (*str)
     {
         // go to the next node
@@ -84,7 +85,7 @@ int search(struct Trie *head, char *str)
 }
 
 // Returns 1 if a given Trie node has any children
-int hasChildren(struct Trie *curr)
+int hasChildren(trie *curr)
 {
     for (int i = 0; i < CHAR_SIZE; i++)
     {
@@ -98,7 +99,7 @@ int hasChildren(struct Trie *curr)
 }
 
 // Recursive function to delete a string from a Trie
-int deletion(struct Trie **curr, char *str)
+int deletion(trie **curr, char *str)
 {
     // return 0 if Trie is empty
     if (*curr == NULL)
@@ -152,13 +153,13 @@ int deletion(struct Trie **curr, char *str)
     return 0;
 }
 
-void print_trie(struct Trie *root)
+void print_trie(trie *root)
 {
     // Prints the nodes of the trie
 
     if (!root)
         return;
-    struct Trie *temp = root;
+    trie *temp = root;
     //  printf("%c -> ", temp->data);
     for (int i = 0; i < CHAR_SIZE; i++)
     {
@@ -170,7 +171,7 @@ void print_trie(struct Trie *root)
 
 int main()
 {
-    struct Trie *head = getNewTrieNode();
+    trie *head = getNewTrieNode();
     int ch, res;
     do
     {

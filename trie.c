@@ -177,6 +177,7 @@ int main()
 
         char *word = malloc(sizeof(char) * CHAR_SIZE);
         int result, len;
+        printf("\n\n\n");
         printf("\n***********   TRIE IMPLEMENTAION   ***********");
         printf("\n\n1. Insert into trie \n2. Search from trie \n3. Delete from trie \n4. Traversal \n5. Exit \n\nEnter your choice: ");
         scanf("%d", &ch);
@@ -221,7 +222,7 @@ int main()
         case 4:
             printf("Print the nodes in the trie\n");
             print_trie(head);
-
+            break;
         case 5:
             exit(1);
         default:

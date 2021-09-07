@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 // Define the character size
-#define CHAR_SIZE 26
+#define N 26
 
 // Data structure to store a Trie node
 struct Trie
 {
     char data;
     int isLeaf; // 1 when the node is a leaf node
-    struct Trie *character[CHAR_SIZE];
+    struct Trie *character[N];
 };
 
 typedef struct Trie trie;
@@ -19,7 +19,7 @@ trie *getNewTrieNode()
     trie *node = (trie *)malloc(sizeof(trie));
     node->isLeaf = 0;
 
-    for (int i = 0; i < CHAR_SIZE; i++)
+    for (int i = 0; i < N; i++)
     {
         node->character[i] = NULL;
     }
@@ -87,7 +87,7 @@ int search(trie *head, char *str)
 // Returns 1 if a given Trie node has any children
 int hasChildren(trie *curr)
 {
-    for (int i = 0; i < CHAR_SIZE; i++)
+    for (int i = 0; i < N; i++)
     {
         if (curr->character[i])
         {
@@ -161,7 +161,7 @@ void print_trie(trie *root)
         return;
     trie *temp = root;
     //  printf("%c -> ", temp->data);
-    for (int i = 0; i < CHAR_SIZE; i++)
+    for (int i = 0; i < N; i++)
     {
         if (temp->character[i] != '\0')
             printf("%c -", root->character[i]->data);
@@ -176,7 +176,7 @@ int main()
     do
     {
 
-        char *word = malloc(sizeof(char) * CHAR_SIZE);
+        char *word = malloc(sizeof(char) * N);
         int result, len;
         printf("\n\n\n");
         printf("\n***********   TRIE IMPLEMENTAION   ***********");

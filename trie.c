@@ -9,19 +9,19 @@ struct Trie
 {
     char data;
     int isLeaf; // 1 when the node is a leaf node
-    struct Trie *character[N];
+    struct Trie *alpha[N];
 };
 
 typedef struct Trie trie;
 // Function that returns a new Trie node
-trie *getNewTrieNode()
+trie *newTrieNode()
 {
     trie *node = (trie *)malloc(sizeof(trie));
     node->isLeaf = 0;
 
     for (int i = 0; i < N; i++)
     {
-        node->character[i] = NULL;
+        node->alpha[i] = NULL;
     }
 
     return node;
@@ -32,22 +32,32 @@ void insert(trie *head, char *str)
 {
     // start from the root node
     trie *curr = head;
-
+static int count=0;
+char *s=str;
     while (*str)
     {
+         
+        int index = (*str|('A'^'a'))-'a';
+        
         // create a new node if the path doesn't exist
-        if (curr->character[*str - 'a'] == NULL)
+        if (curr->alpha[index] == NULL)
         {
-            curr->character[*str - 'a'] = getNewTrieNode();
+            curr->alpha[index] = newTrieNode();
+            count--;
         }
 
         // go to the next node
-        curr = curr->character[*str - 'a'];
+        curr = curr->alpha[index];
         curr->data = *str;
 
+        count++;
         // move to the next character
         str++;
     }
+   
+    if(count==strlen(s))
+    printf("\nThis word is already inserted in the trie");
+    
 
     // mark the current node as a leaf
     curr->isLeaf = 1;
@@ -66,8 +76,9 @@ int search(trie *head, char *str)
     trie *curr = head;
     while (*str)
     {
+         int index = (*str|('A'^'a'))-'a';
         // go to the next node
-        curr = curr->character[*str - 'a'];
+        curr = curr->alpha[index];
 
         // if the string is invalid (reached end of a path in the Trie)
         if (curr == NULL)
@@ -89,7 +100,7 @@ int hasChildren(trie *curr)
 {
     for (int i = 0; i < N; i++)
     {
-        if (curr->character[i])
+        if (curr->alpha[i])
         {
             return 1; // child found
         }
@@ -104,17 +115,20 @@ int deletion(trie **curr, char *str)
     // return 0 if Trie is empty
     if (*curr == NULL)
     {
+        printf("TRIE is empty");
         return 0;
     }
 
     // if the end of the string is not reached
     if (*str)
+    
     {
+         int index = (*str|('A'^'a'))-'a';
         // recur for the node corresponding to the next character in
         // the string and if it returns 1, delete the current node
         // (if it is non-leaf)
-        if (*curr != NULL && (*curr)->character[*str - 'a'] != NULL &&
-            deletion(&((*curr)->character[*str - 'a']), str + 1) &&
+        if (*curr != NULL && (*curr)->alpha[index] != NULL &&
+            deletion(&((*curr)->alpha[index]), str + 1) &&
             (*curr)->isLeaf == 0)
         {
             if (!hasChildren(*curr))
@@ -163,15 +177,15 @@ void print_trie(trie *root)
     //  printf("%c -> ", temp->data);
     for (int i = 0; i < N; i++)
     {
-        if (temp->character[i] != '\0')
-            printf("%c -", root->character[i]->data);
-        print_trie(temp->character[i]);
+        if (temp->alpha[i] != '\0')
+            printf("%c -", root->alpha[i]->data);
+        print_trie(temp->alpha[i]);
     }
 }
 
 int main()
 {
-    trie *head = getNewTrieNode();
+    trie *head = newTrieNode();
     int ch, res;
     do
     {
@@ -205,11 +219,13 @@ int main()
             break;
 
         case 3:
+        
             printf("\nEnter the word to be deleted: ");
             scanf("%s", word);
             len = strlen(word);
             word = realloc(word, sizeof(char) * len);
             result = search(head, word);
+           
             if (result == 1)
             {
                 deletion(&head, word);
@@ -227,9 +243,10 @@ int main()
         case 5:
             exit(1);
         default:
+            printf("Please enter a valid choice");
             break;
         }
-    } while (ch <= 4);
+    } while (ch <= 4); 
 
     return 0;
 }

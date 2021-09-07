@@ -32,7 +32,8 @@ void insert(trie *head, char *str)
 {
     // start from the root node
     trie *curr = head;
-static int count=0;
+
+     int count=0;
 char *s=str;
     while (*str)
     {

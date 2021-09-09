@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -57,7 +58,7 @@ char *s=str;
     }
    
     if(count==strlen(s))
-    printf("\nThis word is already inserted in the trie");
+    printf("\nThis word is already inserted in the trie\n");
     
 
     // mark the current node as a leaf
@@ -164,7 +165,7 @@ int deletion(trie **curr, char *str)
             return 0; // don't delete its parent nodes
         }
     }
-
+   
     return 0;
 }
 
@@ -184,10 +185,57 @@ void print_trie(trie *root)
     }
 }
 
+
+
+void display(trie* root, char str[], int level)
+{
+    // If node is leaf node, it indicates end
+    // of string, so a null character is added
+    // and string is displayed
+    if (root->isLeaf==1) 
+    {
+        str[level] = '\0';
+        printf("%s \n",str);
+    }
+  
+    int i;
+    for (i = 0; i < N; i++) 
+    {
+        // if NON NULL child is found
+        // add parent key to str and
+        // call the display function recursively
+        // for child node
+        if (root->alpha[i]) 
+        {
+            str[level] = i + 'a';
+            display(root->alpha[i], str, level + 1);
+        }
+    }
+}
+
+
+
+
 int main()
 {
     trie *head = newTrieNode();
     int ch, res;
+     insert(head, "apple");
+            insert(head,"account");
+            insert(head,"ball");
+            insert(head,"basket");
+            insert(head,"cat");
+            insert(head,"cup");
+            insert(head,"dog");
+            insert(head,"duck");
+            insert(head,"elephant");
+            insert(head,"egg");
+            insert(head,"fish");
+            insert(head,"frog");
+            int level = 0;
+            char str[20];
+            
+            
     do
     {
 
@@ -205,6 +253,7 @@ int main()
             len = strlen(word);
             word = realloc(word, sizeof(char) * len);
             insert(head, word);
+            display(head, str, level);
             printf("\nInsertion successful!");
             break;
         case 2:
@@ -226,20 +275,22 @@ int main()
             len = strlen(word);
             word = realloc(word, sizeof(char) * len);
             result = search(head, word);
-           
+            
             if (result == 1)
             {
                 deletion(&head, word);
                 //if(res==1)
                 printf("\nDeletion successful!");
+                goto DEL;
             }
             else
                 printf("\nDeletion unsuccessful!\nThe word is not present in the trie!");
             break;
 
         case 4:
+           DEL:
             printf("Print the nodes in the trie\n");
-            print_trie(head);
+            display(head, str, level);
             break;
         case 5:
             exit(1);
